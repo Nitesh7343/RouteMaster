@@ -11,18 +11,21 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
-export default function SignupScreen() {
-  const [name, setName] = useState('');
+export default function LoginScreen() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleSignup = () => {
-    // For now, just navigate back to login
-    // In a real app, you would create the account here
-    if (name.trim() && phoneNumber.trim() && password.trim()) {
-      router.replace('/');
+  const handleLogin = () => {
+    // For now, just navigate to home
+    // In a real app, you would validate credentials here
+    if (phoneNumber.trim() && password.trim()) {
+      router.push('/home');
     }
+  };
+
+  const handleSignup = () => {
+    router.push('/signup');
   };
 
   return (
@@ -39,18 +42,9 @@ export default function SignupScreen() {
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title}>Create New Account</Text>
+          <Text style={styles.title}>Welcome Back!</Text>
+          <Text style={styles.subtitle}>Sign in to continue</Text>
           
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-              autoCapitalize="words"
-            />
-          </View>
-
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -74,17 +68,17 @@ export default function SignupScreen() {
           </View>
 
           <TouchableOpacity 
-            style={styles.signupButton}
-            onPress={handleSignup}
+            style={styles.loginButton}
+            onPress={handleLogin}
           >
-            <Text style={styles.signupButtonText}>Create account</Text>
+            <Text style={styles.loginButtonText}>Sign In</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => router.replace('/')}
+            style={styles.signupButton}
+            onPress={handleSignup}
           >
-            <Text style={styles.backButtonText}>Back to Login</Text>
+            <Text style={styles.signupButtonText}>Create New Account</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -132,9 +126,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
     textAlign: 'center',
     marginBottom: 40,
   },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 16,
   },
-  signupButton: {
+  loginButton: {
     backgroundColor: '#007AFF',
     borderRadius: 8,
     paddingVertical: 15,
@@ -158,17 +158,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
-  signupButtonText: {
+  loginButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
   },
-  backButton: {
+  signupButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#007AFF',
+    borderRadius: 8,
+    paddingVertical: 15,
     alignItems: 'center',
   },
-  backButtonText: {
+  signupButtonText: {
     color: '#007AFF',
     fontSize: 16,
-    textDecorationLine: 'underline',
+    fontWeight: '600',
   },
 });

@@ -34,6 +34,13 @@ export default function RootLayout() {
             headerShown: false 
           }} 
         />
+        <Stack.Screen 
+          name="location-sharing" 
+          options={{ 
+            title: 'Location Sharing',
+            headerShown: false 
+          }} 
+        />
       </Stack>
     </>
   );

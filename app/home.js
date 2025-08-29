@@ -24,12 +24,19 @@ export default function HomeScreen() {
         </Text>
         
         <View style={styles.featureContainer}>
-          <Text style={styles.featureTitle}>Features coming soon:</Text>
+          <Text style={styles.featureTitle}>Available Features:</Text>
           <Text style={styles.feature}>• Share your live location</Text>
           <Text style={styles.feature}>• Track friends and family</Text>
           <Text style={styles.feature}>• Real-time location updates</Text>
           <Text style={styles.feature}>• Route history</Text>
         </View>
+
+        <TouchableOpacity 
+          style={styles.locationButton}
+          onPress={() => router.push('/location-sharing')}
+        >
+          <Text style={styles.locationButtonText}>Share Live Location</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.logoutButton}
@@ -91,6 +98,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginBottom: 8,
+  },
+  locationButton: {
+    backgroundColor: '#4CAF50',
+    borderRadius: 8,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  locationButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
   },
   logoutButton: {
     backgroundColor: '#FF3B30',

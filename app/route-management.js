@@ -39,8 +39,8 @@ export default function RouteManagementScreen() {
   };
 
   const handleDone = () => {
-    // Save route data and navigate back
-    router.back();
+    // Save route data and navigate back to login screen
+    router.replace('/');
   };
 
   const handleBack = () => {
