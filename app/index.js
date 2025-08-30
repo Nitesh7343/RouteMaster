@@ -8,23 +8,37 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from './api'; // <-- make sure you created app/api.js as explained earlier
 
 export default function LoginScreen() {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleLogin = () => {
-    // Validate credentials
-    if (phoneNumber.trim() && password.trim()) {
-      // For demo purposes, let's assume credentials are valid
-      // In a real app, you would check against a database
-      router.push('/route-management');
-    } else {
-      // If credentials don't match, go to create account
-      router.push('/signup');
+  const handleLogin = async () => {
+    if (!phone.trim() || !password.trim()) {
+      Alert.alert("Error", "Please enter phone and password");
+      return;
+    }
+
+    try {
+      const res = await api.post('/api/auth/login', { phone, password });
+
+      // ✅ save token + driver info
+      await AsyncStorage.setItem('token', res.data.token);
+      if (res.data.driver?._id) {
+        await AsyncStorage.setItem('driverId', res.data.driver._id);
+      }
+
+      Alert.alert("Success", "Login successful!");
+      router.push('/route-management'); // go to duty screen
+    } catch (err) {
+      console.log("Login error:", err.response?.data || err.message);
+      Alert.alert("Login Failed", err.response?.data?.error || "Invalid credentials");
     }
   };
 
@@ -53,8 +67,8 @@ export default function LoginScreen() {
             <TextInput
               style={styles.input}
               placeholder="Phone Number"
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
+              value={phone}
+              onChangeText={setPhone}
               keyboardType="phone-pad"
               autoCapitalize="none"
             />
@@ -91,13 +105,8 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  keyboardView: {
-    flex: 1,
-  },
+  container: { flex: 1, backgroundColor: '#f5f5f5' },
+  keyboardView: { flex: 1 },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -106,78 +115,33 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
   },
-  appTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-  },
+  appTitle: { fontSize: 28, fontWeight: 'bold', color: '#333' },
   logoPlaceholder: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#007AFF',
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 60, height: 60, backgroundColor: '#007AFF',
+    borderRadius: 30, justifyContent: 'center', alignItems: 'center',
   },
-  logoText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 30,
-  },
+  logoText: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
+  content: { flex: 1, justifyContent: 'center', paddingHorizontal: 30 },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 10,
+    fontSize: 32, fontWeight: 'bold', color: '#333',
+    textAlign: 'center', marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 40,
+    fontSize: 16, color: '#666', textAlign: 'center', marginBottom: 40,
   },
-  inputContainer: {
-    marginBottom: 20,
-  },
+  inputContainer: { marginBottom: 20 },
   input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    fontSize: 16,
+    backgroundColor: '#fff', borderWidth: 1, borderColor: '#ddd',
+    borderRadius: 8, paddingHorizontal: 15, paddingVertical: 12, fontSize: 16,
   },
   loginButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    backgroundColor: '#007AFF', borderRadius: 8, paddingVertical: 15,
+    alignItems: 'center', marginTop: 10, marginBottom: 20,
   },
-  loginButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
+  loginButtonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
   signupButton: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#007AFF',
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
+    backgroundColor: '#fff', borderWidth: 1, borderColor: '#007AFF',
+    borderRadius: 8, paddingVertical: 15, alignItems: 'center',
   },
-  signupButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  signupButtonText: { color: '#007AFF', fontSize: 16, fontWeight: '600' },
 });
