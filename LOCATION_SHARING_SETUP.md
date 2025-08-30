@@ -44,13 +44,24 @@ The app has been configured with the necessary permissions:
 - **iOS**: NSLocationWhenInUseUsageDescription, NSLocationAlwaysAndWhenInUseUsageDescription
 
 ### 4. Usage Flow
-1. User fills out route management form
-2. Clicks "Done" button
-3. App navigates back to login screen
-4. User can access location sharing from home screen
+
+#### Path 1: Valid Credentials
+1. User enters valid phone number and password
+2. App navigates to Route Management screen
+3. User fills out route details and clicks "Done"
+4. App navigates to Location Sharing screen
 5. User can toggle location sharing ON/OFF
-6. When ON, location data is logged to console
-7. User can go back to home screen with confirmation if sharing is active
+6. When ON, coordinates are shared to database
+7. User can click "Done" to finish or "Back" to return
+
+#### Path 2: Invalid Credentials
+1. User enters invalid phone number or password
+2. App navigates to Create Account screen
+3. User creates new account and clicks "Create account"
+4. App navigates to Location Sharing screen
+5. User can toggle location sharing ON/OFF
+6. When ON, coordinates are shared to database
+7. User can click "Done" to finish or "Back" to return
 
 ## Security Notes
 - **Important**: When integrating with a backend API, use proper authentication and HTTPS
@@ -68,11 +79,22 @@ The app has been configured with the necessary permissions:
 - react-native-dotenv: For environment variable management (optional)
 
 ## Testing
+
+### Test Path 1: Valid Login
 1. Run the app: `npm start`
-2. Navigate to route management
-3. Fill out the form and click "Done"
-4. App should return to login screen
-5. Login and go to home screen
-6. Click "Share Live Location" to access the feature
-7. Test the location sharing toggle
-8. Check your development console for location data logs
+2. Enter any phone number and password (both fields must be filled)
+3. Click "Sign In"
+4. App should navigate to Route Management
+5. Fill out route details and click "Done"
+6. App should navigate to Location Sharing
+7. Test the ON/OFF toggle
+8. Check console logs for location data
+
+### Test Path 2: Invalid Login
+1. Leave phone number or password empty
+2. Click "Sign In"
+3. App should navigate to Create Account
+4. Fill out account details and click "Create account"
+5. App should navigate to Location Sharing
+6. Test the ON/OFF toggle
+7. Check console logs for location data

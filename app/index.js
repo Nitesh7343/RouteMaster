@@ -17,10 +17,14 @@ export default function LoginScreen() {
   const router = useRouter();
 
   const handleLogin = () => {
-    // For now, just navigate to home
-    // In a real app, you would validate credentials here
+    // Validate credentials
     if (phoneNumber.trim() && password.trim()) {
-      router.push('/home');
+      // For demo purposes, let's assume credentials are valid
+      // In a real app, you would check against a database
+      router.push('/route-management');
+    } else {
+      // If credentials don't match, go to create account
+      router.push('/signup');
     }
   };
 

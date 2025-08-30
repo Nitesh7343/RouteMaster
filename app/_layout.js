@@ -20,13 +20,7 @@ export default function RootLayout() {
             headerShown: true 
           }} 
         />
-        <Stack.Screen 
-          name="home" 
-          options={{ 
-            title: 'Home',
-            headerShown: true 
-          }} 
-        />
+
         <Stack.Screen 
           name="route-management" 
           options={{ 

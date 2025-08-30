@@ -18,10 +18,10 @@ export default function SignupScreen() {
   const router = useRouter();
 
   const handleSignup = () => {
-    // For now, just navigate back to login
-    // In a real app, you would create the account here
+    // Create account and navigate to location sharing
     if (name.trim() && phoneNumber.trim() && password.trim()) {
-      router.replace('/');
+      // In a real app, you would save the account to database
+      router.push('/location-sharing');
     }
   };
 

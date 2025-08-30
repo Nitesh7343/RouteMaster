@@ -141,13 +141,34 @@ export default function LocationSharingScreen() {
             text: 'Stop & Go Back', 
             onPress: () => {
               stopLocationSharing();
-              router.push('/home');
+              router.replace('/');
             }
           }
         ]
       );
     } else {
-      router.push('/home');
+      router.replace('/');
+    }
+  };
+
+  const handleDone = () => {
+    if (isSharing) {
+      Alert.alert(
+        'Stop Sharing',
+        'Location sharing is still active. Do you want to stop sharing and finish?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { 
+            text: 'Stop & Done', 
+            onPress: () => {
+              stopLocationSharing();
+              router.replace('/');
+            }
+          }
+        ]
+      );
+    } else {
+      router.replace('/');
     }
   };
 
@@ -204,18 +225,27 @@ export default function LocationSharingScreen() {
           </View>
         )}
 
-        <View style={styles.statusContainer}>
-          <Text style={styles.statusText}>
-            Status: {isSharing ? 'Sharing location (check console logs)' : 'Location sharing stopped'}
-          </Text>
-        </View>
+         <View style={styles.statusContainer}>
+           <Text style={styles.statusText}>
+             Status: {isSharing ? 'ON - Sharing coordinates to database' : 'OFF - Location sharing stopped'}
+           </Text>
+         </View>
 
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={handleBack}
-        >
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
+         <View style={styles.buttonContainer}>
+           <TouchableOpacity 
+             style={[styles.backButton, styles.halfButton]}
+             onPress={handleBack}
+           >
+             <Text style={styles.backButtonText}>Back</Text>
+           </TouchableOpacity>
+           
+           <TouchableOpacity 
+             style={[styles.doneButton, styles.halfButton]}
+             onPress={handleDone}
+           >
+             <Text style={styles.doneButtonText}>Done</Text>
+           </TouchableOpacity>
+         </View>
       </View>
     </SafeAreaView>
   );
@@ -346,17 +376,36 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 15,
+    width: '100%',
+  },
   backButton: {
     backgroundColor: '#007AFF',
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 8,
-    width: '100%',
     alignItems: 'center',
   },
   backButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  doneButton: {
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  doneButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  halfButton: {
+    flex: 1,
   },
 });

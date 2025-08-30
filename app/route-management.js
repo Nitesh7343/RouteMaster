@@ -39,8 +39,8 @@ export default function RouteManagementScreen() {
   };
 
   const handleDone = () => {
-    // Save route data and navigate back to login screen
-    router.replace('/');
+    // Save route data and navigate to location sharing
+    router.push('/location-sharing');
   };
 
   const handleBack = () => {
